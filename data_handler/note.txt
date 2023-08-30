@@ -1,1 +1,7 @@
 데이터 로더와 전처리 작업 파일
+8.30
+dataloader.py ->seg function 수정
+              ->getitem 연결부 확인
+              ->
+              
+              
