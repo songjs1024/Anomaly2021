@@ -9,10 +9,15 @@ class generater(object):
     
 
   def combine(self):
-    data_List = os.listdir(self.raw_path)
-    for i in range(len(data_List)):
-      tmp_raw = pd.read_csv(raw_path)
-      
+    appended_data = []
+    for file in glob.glob(raw_path+'*.csv'):
+      tmp_raw = pd.read_csv(file,skiprows=8,usecols=['12000'])
+      appended_data.append(tmp_raw)
+    appended_data = pd.concat(appended_data)
+    if not os.path.exists(raw_path+'train_data'): 
+      os.mkdir(raw_path+'train_data')
+    appended_data.to_csv(raw_path+'train_data'+'/train_data.csv',sep=',')    
+
       
       
 
