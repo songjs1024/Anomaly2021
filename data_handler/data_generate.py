@@ -10,8 +10,8 @@ class generater(object):
 
   def combine(self):
     data_List = os.listdir(self.raw_path)
-    for i in range(len(data_List):
-      tmp_raw = pd.read_excel(raw_path, engine ='openpyxl')
+    for i in range(len(data_List)):
+      tmp_raw = pd.read_csv(raw_path)
       
       
       
