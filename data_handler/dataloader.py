@@ -1,14 +1,16 @@
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
+from tensorflow.keras.utils import Sequence
 
-class KrugerLoader(object):
+
+class KrugerLoader(Sequence):
 
     def __init__(self, data_path, win_size, step, mode="train"):
         self.mode = mode
         self.step = step
         self.win_size = win_size
         self.scaler = StandardScaler()
-        data = pd.read_csv(data_path + '/data.csv')
+        data = pd.read_csv(data_path + '/concat_data.csv')
         data = data.values[:, 1:]
         self.scaler.fit(data)
         data = self.scaler.transform(data)
@@ -31,13 +33,13 @@ class KrugerLoader(object):
         
         '''
 
-class PunkerLoader(object):
+class PunkerLoader(Sequence):
     def __init__(self, data_path, win_size, step, mode="train"):
         self.mode = mode
         self.step = step
         self.win_size = win_size
         self.scaler = StandardScaler()
-        data = pd.read_csv(data_path + '/data.csv')
+        data = pd.read_csv(data_path + '/concat_data.csv')
         data = data.values[:, 1:]
         self.scaler.fit(data)
         data = self.scaler.transform(data)
@@ -63,9 +65,9 @@ class PunkerLoader(object):
     
 def get_loader_segment(data_path, batch_size, win_size=1000, step=100, mode='train', dataset='vibx'):
     if (dataset == 'kruger'):
-        dataset = SMDSegLoader(data_path, win_size, step, mode)
+        dataset = KrugerLoader(data_path, win_size, step, mode)
     elif (dataset == 'punker'):
-        dataset = MSLSegLoader(data_path, win_size, 1, mode)
+        dataset = PunkerLoader(data_path, win_size, 1, mode)
 
     shuffle = False
     if mode == 'train':
