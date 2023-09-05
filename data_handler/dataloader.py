@@ -1,9 +1,11 @@
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
-from tensorflow.keras.utils import Sequence
+from tensorflow import keras
+from keras import utils 
+import numpy as np
+import math
 
-
-class KrugerLoader(Sequence):
+class KrugerLoader(utils.Sequence):
 
     def __init__(self, data_path, win_size, step, mode="train"):
         self.mode = mode
@@ -28,12 +30,21 @@ class KrugerLoader(Sequence):
     
 
     def __get   (self):
-        '''
-        인덱스 메인에서 불러오는거 확인
-        
-        '''
+        index = index * self.step
+        if self.mode == "train":
+            return np.float32(self.train[index:index + self.win_size]), np.float32(self.test_labels[0:self.win_size])
+        elif (self.mode == 'val'):
+            return np.float32(self.val[index:index + self.win_size]), np.float32(self.test_labels[0:self.win_size])
+        elif (self.mode == 'test'):
+            return np.float32(self.test[index:index + self.win_size]), np.float32(
+                self.test_labels[index:index + self.win_size])
+        else:
+            return np.float32(self.test[
+                              index // self.step * self.win_size:index // self.step * self.win_size + self.win_size]), np.float32(
+                self.test_labels[index // self.step * self.win_size:index // self.step * self.win_size + self.win_size])
 
-class PunkerLoader(Sequence):
+
+class PunkerLoader(utils.Sequence):
     def __init__(self, data_path, win_size, step, mode="train"):
         self.mode = mode
         self.step = step
@@ -60,7 +71,30 @@ class PunkerLoader(Sequence):
         
         '''
     
+class Dataloader(utils.Sequence):
+
+    def __init__(self, x_set, y_set, batch_size, shuffle=False):
+        self.x, self.y = x_set, y_set
+        self.batch_size = batch_size
+        self.shuffle=shuffle
+        self.on_epoch_end()
+
+    def __len__(self):
+        return math.ceil(len(self.x) / self.batch_size)
+
+    def __getitem__(self, idx):
+
+        indices = self.indices[idx*self.batch_size:(idx+1)*self.batch_size]
+
+        batch_x = [self.x[i] for i in indices]
+        batch_y = [self.y[i] for i in indices]
+
+        return np.array(batch_x), np.array(batch_y)
     
+    def on_epoch_end(self):
+        self.indices = np.arange(len(self.x))
+        if self.shuffle == True:
+            np.random.shuffle(self.indices)   
     
     
 def get_loader_segment(data_path, batch_size, win_size=1000, step=100, mode='train', dataset='vibx'):
@@ -72,8 +106,11 @@ def get_loader_segment(data_path, batch_size, win_size=1000, step=100, mode='tra
     shuffle = False
     if mode == 'train':
         shuffle = True
-        
-    data_loader = DataLoader(dataset=dataset,
+
+
+    
+    
+    data_loader = Dataloader(dataset=dataset,
                              batch_size=batch_size,
                              shuffle=shuffle,
                              num_workers=0)
