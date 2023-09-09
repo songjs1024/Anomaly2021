@@ -32,11 +32,11 @@ class EncoderLayer(utils.Sequence):
     
     
     
-    class Encoder(utils.Sequence):
-        def __init__(self, attn_layers, norm_layer=None):
-            super(Encoder, self).__init__()
-            self.attn_layers = utils.Sequence(attn_layers)
-            self.norm = norm_layer
+class Encoder(utils.Sequence):
+    def __init__(self, attn_layers, norm_layer=None):
+        super(Encoder, self).__init__()
+        self.attn_layers = utils.Sequence(attn_layers)
+        self.norm = norm_layer
 
 
 class AnomalyTransformer(utils.Sequence):
