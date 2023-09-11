@@ -2,11 +2,11 @@ from tensorflow import keras
 from keras import layers as ln
 from keras import Model
 from keras import activations as atv
-from keras import utils
+from keras import Model
 from .embedding import DataEmbedding, TokenEmbedding
 from .attention import AnomalyAttention, AttentionLayer
 
-class EncoderLayer(utils.Sequence):
+class EncoderLayer(Model):
     def __init__(self, attention, d_model, d_ff=None, dropout=0.3, activation="relu"):
         super(EncoderLayer, self).__init__()
         d_ff = d_ff or 4 * d_model
@@ -32,14 +32,14 @@ class EncoderLayer(utils.Sequence):
     
     
     
-class Encoder(utils.Sequence):
+class Encoder(Model):
     def __init__(self, attn_layers, norm_layer=None):
         super(Encoder, self).__init__()
-        self.attn_layers = utils.Sequence(attn_layers)
+        self.attn_layers = Model(attn_layers)
         self.norm = norm_layer
 
 
-class AnomalyTransformer(utils.Sequence):
+class AnomalyTransformer(Model):
     def __init__(self, win_size, enc_in, c_out, d_model=512, n_heads=8, e_layers=3, d_ff=512,
                  dropout=0.0, activation='gelu', output_attention=True):
         super(AnomalyTransformer, self).__init__()
