@@ -1,11 +1,11 @@
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from tensorflow import keras
-from keras import utils 
+from keras import Model 
 import numpy as np
 import math
 
-class KrugerLoader(utils.Sequence):
+class KrugerLoader(Model):
 
     def __init__(self, data_path, win_size, step, mode="train"):
         self.mode = mode
@@ -44,7 +44,7 @@ class KrugerLoader(utils.Sequence):
                 self.test_labels[index // self.step * self.win_size:index // self.step * self.win_size + self.win_size])
 
 
-class PunkerLoader(utils.Sequence):
+class PunkerLoader(Model):
     def __init__(self, data_path, win_size, step, mode="train"):
         self.mode = mode
         self.step = step
@@ -80,7 +80,7 @@ class PunkerLoader(utils.Sequence):
                 self.test_labels[index // self.step * self.win_size:index // self.step * self.win_size + self.win_size])
 
     
-class Dataloader(utils.Sequence):
+class Dataloader(Model):
 
     def __init__(self, x_set, y_set, batch_size, shuffle=False):
         self.x, self.y = x_set, y_set
