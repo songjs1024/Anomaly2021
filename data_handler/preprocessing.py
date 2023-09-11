@@ -3,7 +3,7 @@ from scipy.signal import butter
 from scipy.signal import lfilter
 import librosa
 
-class preprocessing():
+class preprocessing(object):
 
     def __init__(self,data,lowcut,highcut,fs,n_fft,hop_length,win_length,order=5):
         self.data = data
