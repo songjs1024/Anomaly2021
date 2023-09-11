@@ -14,7 +14,7 @@ def main(config):
     tf.test.is_built_with_cuda()
 
     if (not os.path.exists(config.model_save_path)):
-        os.mkdir(config.model_save_path)
+        mkdir(config.model_save_path)
     solver = Solver(vars(config))
 
     if config.mode == 'train':
