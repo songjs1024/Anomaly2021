@@ -1,10 +1,10 @@
 import math
 import tensorflow as tf
 from tensorflow import keras
-from keras import utils
+from keras import Model
 from keras import layers as ln
 
-class PositionalEmbedding(utils.Sequence):
+class PositionalEmbedding(Model):
     def __init__(self, d_model, max_len=5000):
         super(PositionalEmbedding, self).__init__()
         # Compute the positional encodings once in log space.
@@ -24,7 +24,7 @@ class PositionalEmbedding(utils.Sequence):
         return self.pe[:, :x.size(1)]
 
 
-class TokenEmbedding(utils.Sequence):
+class TokenEmbedding(Model):
     def __init__(self, c_in, d_model,x):
         super(TokenEmbedding, self).__init__()
         #tensorflow not use version 1.x  if tensorflow.__version__ >= 2.x  padding = 1 
@@ -49,7 +49,7 @@ class TokenEmbedding(utils.Sequence):
         return x
 
 
-class DataEmbedding(utils.Sequence):
+class DataEmbedding(Model):
     def __init__(self, c_in, d_model, dropout=0.0):
         super(DataEmbedding, self).__init__()
 
