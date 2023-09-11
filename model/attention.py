@@ -40,7 +40,7 @@ with tf.Session() as sess:
 '''
 
 
-class AnomalyAttention(utils.Sequence):
+class AnomalyAttention(Model):
     def __init__(self, win_size, mask_flag=True, scale=None, attention_dropout=0.0, output_attention=False):
         super(AnomalyAttention, self).__init__()
         self.scale = scale
@@ -80,7 +80,7 @@ class AnomalyAttention(utils.Sequence):
             return (V.contiguous(), None)
 
 
-class AttentionLayer(utils.Sequence):
+class AttentionLayer(Model):
     def __init__(self, attention, d_model, n_heads, d_keys=None,
                  d_values=None):
         super(AttentionLayer, self).__init__()
