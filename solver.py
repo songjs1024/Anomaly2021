@@ -9,8 +9,8 @@ def my_kl_loss(p, q):
     return tf.reduce_mean(tf.reduce_sum(res,-1), 1)
 
 
-def adjust_learning_rate(optimizer, epoch, lr_):
-    lr_adjust = {epoch: lr_ * (0.5 ** ((epoch - 1) // 1))}
+def adjust_learning_rate(optimizer, epoch, lr):
+    lr_adjust = {epoch: lr * (0.5 ** ((epoch - 1) // 1))}
     if epoch in lr_adjust.keys():
         lr = lr_adjust[epoch]
         for param_group in optimizer.param_groups:
